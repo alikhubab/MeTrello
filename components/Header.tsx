@@ -1,7 +1,10 @@
+"use client";
 import React from "react";
 import Image from "next/image";
-import logo from "@/public/logotext.png";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import Avatar from "react-avatar";
+
+import logo from "@/public/logotext.png";
 
 function Header() {
   return (
@@ -14,7 +17,7 @@ function Header() {
           width={100}
           height={100}
         />
-        <div>
+        <div className="flex items-center space-x-4 flex-1 justify-end w-full">
           <form className="flex items-center space-x-5 bg-white rounded-md p-2 shadow-md flex-1 md:flex-initial">
             <MagnifyingGlassIcon className="w-6 h-6 text-gray-400" />
             <input
@@ -26,6 +29,9 @@ function Header() {
               Search
             </button>
           </form>
+          <button className="bg-primary text-white rounded-full p-2 w-12 h-12 shadow-sm font-bold">
+            KA
+          </button>
           {/* Avatar */}
         </div>
       </div>
