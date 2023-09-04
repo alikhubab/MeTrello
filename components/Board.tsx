@@ -31,6 +31,34 @@ function Board() {
         columns: rearrangedColumns,
       });
     }
+
+    const columns = Array.from(board.columns);
+    const [, startCol] = columns.find(([id]) => id === source.droppableId)!;
+    const [, finishCol] = columns.find(
+      ([id]) => id === destination.droppableId
+    )!;
+
+    if (!startCol || !finishCol) return;
+
+    if (source.index === destination.index && startCol === finishCol) return;
+
+    const newTodos = startCol.todos;
+    const [movedTodo] = newTodos.splice(source.index, 1);
+
+    if (startCol.id === finishCol.id) {
+      // dragged in the same column
+      newTodos.splice(destination.index, 0, movedTodo);
+      const newCol = {
+        id: startCol.id,
+        todos: newTodos,
+      };
+      const newCols = new Map(board.columns);
+      newCols.set(startCol.id, newCol);
+
+      setBoard({ ...board, columns: newCols });
+    } else {
+      // dragged in another column
+    }
   }
 
   return (
