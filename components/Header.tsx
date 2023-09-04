@@ -1,12 +1,22 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Avatar from "react-avatar";
 
 import logo from "@/public/logotext.png";
+import { useBoardStore } from "@/store/BoardStore";
 
 function Header() {
+  const [searchString, setSearchString] = useBoardStore((state) => [
+    state.searchString,
+    state.setSearchString,
+  ]);
+
+  useEffect(() => {
+    console.log(searchString);
+  }, [searchString]);
+
   return (
     <header>
       <div
@@ -31,6 +41,8 @@ function Header() {
               type="text"
               placeholder="Search"
               className="outline-none flex-1 p-2"
+              value={searchString}
+              onChange={(e) => setSearchString(e.target.value)}
             />
             <button type="submit" hidden>
               Search
