@@ -18,7 +18,7 @@ export const getTodosGroupedByColumns = async () => {
     acc.get(todo.status)!.todos.push({
       $id: todo.$id,
       $createdAt: todo.$createdAt,
-      title: todo.$title,
+      title: todo.title,
       status: todo.status,
       ...(todo.image && { image: todo.image }),
     });
