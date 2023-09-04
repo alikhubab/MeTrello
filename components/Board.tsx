@@ -58,6 +58,25 @@ function Board() {
       setBoard({ ...board, columns: newCols });
     } else {
       // dragged in another column
+      const finishTodos = Array.from(finishCol.todos);
+      finishTodos.splice(destination.index, 0, movedTodo);
+
+      const newCols = new Map(board.columns);
+      const newCol = {
+        id: startCol.id,
+        todos: newTodos,
+      };
+
+      newCols.set(startCol.id, newCol);
+      newCols.set(finishCol.id, {
+        id: finishCol.id,
+        todos: finishTodos,
+      });
+
+      setBoard({
+        ...board,
+        columns: newCols,
+      });
     }
   }
 
