@@ -1,11 +1,13 @@
+import { databases } from "@/appwrite";
 import { getTodosGroupedByColumns } from "@/lib/getTodosGroupedByColumns";
-import { Board, Column, TypedColumn } from "@/typings";
+import { Board, Column, Todo, TypedColumn } from "@/typings";
 import { create } from "zustand";
 
 interface BoardState {
   board: Board;
   getBoard: () => void;
   setBoard: (board: Board) => void;
+  updateTodoInDB: (todo: Todo, columnId: TypedColumn) => void;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
@@ -15,4 +17,15 @@ export const useBoardStore = create<BoardState>((set) => ({
     set({ board });
   },
   setBoard: (board) => set({ board }),
+  updateTodoInDB: async (todo, columnId) => {
+    databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
+      todo.$id,
+      {
+        title: todo.title,
+        status: columnId,
+      }
+    );
+  },
 }));

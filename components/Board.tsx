@@ -6,10 +6,11 @@ import Column from "./Column";
 import { TypedColumn } from "@/typings";
 
 function Board() {
-  const [board, getBoard, setBoard] = useBoardStore((state) => [
+  const [board, getBoard, setBoard, updateTodoInDB] = useBoardStore((state) => [
     state.board,
     state.getBoard,
     state.setBoard,
+    state.updateTodoInDB,
   ]);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ function Board() {
       // dragged in another column
       const finishTodos = Array.from(finishCol.todos);
       finishTodos.splice(destination.index, 0, movedTodo);
-
+      console.log(board);
       const newCols = new Map(board.columns);
       const newCol = {
         id: startCol.id,
@@ -72,6 +73,8 @@ function Board() {
         id: finishCol.id,
         todos: finishTodos,
       });
+
+      updateTodoInDB(movedTodo, finishCol.id);
 
       setBoard({
         ...board,
