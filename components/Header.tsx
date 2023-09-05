@@ -1,17 +1,34 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Avatar from "react-avatar";
 
 import logo from "@/public/logotext.png";
 import { useBoardStore } from "@/store/BoardStore";
+import fetchSuggestion from "@/lib/fetchSuggestion";
 
 function Header() {
-  const [searchString, setSearchString] = useBoardStore((state) => [
+  const [board, searchString, setSearchString] = useBoardStore((state) => [
+    state.board,
     state.searchString,
     state.setSearchString,
   ]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [suggestion, setSuggestion] = useState<string>();
+
+  useEffect(() => {
+    if (board.columns.size === 0) return;
+    setLoading(true);
+    async function getSuggestion() {
+      const suggestion = await fetchSuggestion(board);
+      console.log(suggestion);
+      setSuggestion(suggestion);
+      setLoading(false);
+    }
+
+    getSuggestion();
+  }, [board]);
 
   useEffect(() => {
     console.log(searchString);
@@ -58,9 +75,15 @@ function Header() {
         className="flex items-center
        justify-center px-5 py-3 md:py-5"
       >
-        <p className="p-5 flex items-center justify-center text-sm font-light pr-5 shadow-xl rounded-xl w-fit bg-white italic ma-w-3xl text-primary">
-          <UserCircleIcon className="w-10 h-10 text-primary inline-block mr-1" />
-          GPT is summarizing your tasks for the day.
+        <p className="p-5 flex items-center justify-center text-sm font-light pr-5 shadow-xl rounded-xl w-fit bg-white italic ma-w-3xl text-primary transition-[width] delay-150">
+          <UserCircleIcon
+            className={`w-10 h-10 text-primary inline-block mr-1 ${
+              loading && "animate-spin"
+            }`}
+          />
+          {suggestion && !loading
+            ? suggestion
+            : "GPT is summarizing your tasks for the day."}
         </p>
       </div>
     </header>
