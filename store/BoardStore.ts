@@ -10,7 +10,15 @@ interface BoardState {
   updateTodoInDB: (todo: Todo, columnId: TypedColumn) => void;
   searchString: string;
   setSearchString: (term: string) => void;
+
+  addTodo: (todo: string, columnId: TypedColumn, image?: File | null) => void;
   deleteTodo: (todoIndex: number, todo: Todo, id: TypedColumn) => void;
+  newTaskInput: string;
+  setNewTaskInput: (text: string) => void;
+  newTaskType: TypedColumn;
+  image: File | null;
+  setImage: (image: File | null) => void;
+  setNewTaskType: (newTaskType: TypedColumn) => void;
 }
 
 export const useBoardStore = create<BoardState>((set, get) => ({
@@ -19,6 +27,12 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     const board = await getTodosGroupedByColumns();
     set({ board });
   },
+  image: null,
+  setImage: (image) => set({ image }),
+  newTaskInput: "",
+  newTaskType: "todo",
+  setNewTaskType: (newTaskType) => set({ newTaskType }),
+  setNewTaskInput: (newTaskInput) => set({ newTaskInput }),
   setBoard: (board) => set({ board }),
   updateTodoInDB: async (todo, columnId) => {
     databases.updateDocument(
@@ -31,6 +45,7 @@ export const useBoardStore = create<BoardState>((set, get) => ({
       }
     );
   },
+  addTodo: async (todo, columnId, image) => {},
   deleteTodo: async (todoIndex, todo, id) => {
     const newCols = new Map(get().board.columns);
 
