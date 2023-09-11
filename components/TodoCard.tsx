@@ -1,7 +1,9 @@
 "use client";
+import getImageUrl from "@/lib/getImageUrl";
 import { useBoardStore } from "@/store/BoardStore";
 import { Todo, TypedColumn } from "@/typings";
 import { XCircleIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
 import React from "react";
 import {
   DraggableProvidedDragHandleProps,
@@ -46,6 +48,17 @@ function TodoCard({
         </button>
       </div>
       {/* TODO: Image here */}
+      {todo.image && (
+        <div className="relative h-full w-full rounded-b-md">
+          <Image
+            className="w-full object-contain rounded-b-md"
+            src={getImageUrl(todo.image).toString()}
+            alt="Task image"
+            width={400}
+            height={200}
+          ></Image>
+        </div>
+      )}
     </div>
   );
 }

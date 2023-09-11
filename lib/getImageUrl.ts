@@ -1,9 +1,11 @@
 import { storage } from "@/appwrite";
 import { Image } from "@/typings";
 
-const getImageUrl = async (image: Image) => {
-  const url = storage.getFilePreview(image.buckedId, image.fieldId);
-
+const getImageUrl = (image: Image) => {
+  console.log("*****************", image);
+  const { buckedId, fileId, bucketId } =
+    typeof image === "string" ? JSON.parse(image) : image;
+  const url = storage.getFilePreview(buckedId || bucketId, fileId);
   return url;
 };
 

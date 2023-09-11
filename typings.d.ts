@@ -20,6 +20,6 @@ export interface Todo extends Partial<Models.Document> {
 }
 
 interface Image {
-  buckedId: string;
+  bucketId: string;
   fileId: string;
 }

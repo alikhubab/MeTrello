@@ -53,7 +53,7 @@ export const useBoardStore = create<BoardState>((set, get) => ({
       const fileUpload = await uploadImage(image);
       if (fileUpload) {
         file = {
-          buckedId: fileUpload.bucketId,
+          bucketId: fileUpload.bucketId,
           fileId: fileUpload.$id,
         };
       }
@@ -108,7 +108,7 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     set({ board: { columns: newCols } });
 
     if (todo.image)
-      await storage.deleteFile(todo.image.buckedId, todo.image.fileId);
+      await storage.deleteFile(todo.image.bucketId, todo.image.fileId);
 
     await databases.deleteDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
